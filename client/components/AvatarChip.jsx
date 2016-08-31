@@ -8,7 +8,6 @@ export default class AvatarChip extends React.Component {
     this.state = {
       open: false,
     };
-    console.log(props);
   }
 
   handleClick(e) {

@@ -22,7 +22,6 @@ router.get('/me', (req, res) => {
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
-    console.log(info);
     if (err) {
       return next(err);
     }

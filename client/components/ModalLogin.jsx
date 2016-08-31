@@ -40,7 +40,6 @@ class ModalLogin extends React.Component {
 
   showError() {
     if (this.props.errors.size > 0) {
-      console.log(this.props.errors.first());
       this.props.consume();
     }
   }

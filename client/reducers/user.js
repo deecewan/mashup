@@ -4,9 +4,7 @@ import * as user from '../actions/user';
 const initialState = new Map();
 
 function getLocation(location) {
-  console.log('reducer', location);
   const { latitude, longitude } = location.coords;
-  console.log(latitude, longitude);
   return { latitude, longitude };
 }
 
