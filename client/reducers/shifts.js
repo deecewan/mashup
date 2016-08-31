@@ -4,7 +4,8 @@ import * as shifts from '../actions/shifts';
 const Shift = new Record({
   start: null,
   finish: null,
-  department_id: null,
+  department: null,
+  location: null,
 });
 
 function addShift(state, shift) {

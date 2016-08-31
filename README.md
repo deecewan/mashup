@@ -34,14 +34,14 @@ documentation
 
 - [x] Sign up.
 - [x] Sign in.
-- [ ] Provide a way to link Tanda account
+- [x] Provide a way to link Tanda account
 - [ ] Provide a way to link Uber account
 
 ### Tanda
 
-- [ ] Get a user's roster
+- [x] Get a user's roster
     - [ ] Store it
-- [ ] Find the location of the business
+- [x] Find the location of the business
 
 ### Web
 
@@ -57,3 +57,24 @@ documentation
 ### Uber
 
 - [ ] Get trip details between two points
+
+
+## Account Info
+
+### API Application Open
+
+email: david@tanda.co
+
+password: lastpass
+
+### Organisation Account
+
+email: cab432org@example.com
+
+password: cab432mashup
+
+### Employee
+
+email: cab432@example.com
+
+password: cab432mashup

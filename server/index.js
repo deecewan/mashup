@@ -40,10 +40,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
   // debug route
-  console.log(req.headers);
-  console.log(req.signedCookies);
+  console.log('------------------');
   return next();
-})
+});
 app.use((req, res, next) => tanda.refresh(req, res, next));
 app.use(routes);
 

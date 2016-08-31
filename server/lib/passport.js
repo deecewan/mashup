@@ -26,12 +26,10 @@ passport.use(new LocalStrategy({
 }));
 
 passport.serializeUser((user, done) => {
-  console.log('serializing', user.id);
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log('deserializing', id);
   db.models.User.findOne({
     where: {
       id,
