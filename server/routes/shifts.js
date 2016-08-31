@@ -37,8 +37,12 @@ router.get('/', (req, res) => {
     .then(shifts => res.status(200).json(shifts));
 });
 
+function getTimeFromJourney(t) {
+  const x = t.match(/\/Date\((\d*)\+.*\)/);
+  return new Date(parseInt(x[1], 10));
+}
+
 router.get('/journeys', async (req, res) => {
-  console.log(req.query);
   const currentLocation = req.query.currentLocation;
   const orgLocation = req.query.orgLocation;
   const startTime = req.query.startTime;
@@ -47,10 +51,30 @@ router.get('/journeys', async (req, res) => {
       currentLocation.longitude)).Suggestions[0].Id;
     const endLocation = (await tl.getLocationId(orgLocation.latitude,
       orgLocation.longitude)).Suggestions[0].Id;
-    const journeys = await tl.getJourneys(startLocation, endLocation, startTime);
-    return res.json(journeys);
+    const journeys = (await tl.getJourneys(startLocation, endLocation, startTime))
+      .TravelOptions.Itineraries.map(async function mapJourney(journey) {
+        const newJourney = {};
+        newJourney.leaveTime = getTimeFromJourney(journey.FirstDepartureTime);
+        newJourney.duration = journey.DurationMins;
+        newJourney.arriveTime = getTimeFromJourney(journey.EndTime);
+        const departRaw = await tl.getStop(journey.Legs[0].ToStopId);
+        newJourney.departLocation = {
+          name: departRaw.Description,
+          location: departRaw.Position,
+        };
+        const arriveRaw = await
+          tl.getStop(journey.Legs[journey.Legs.length - 1].FromStopId);
+        newJourney.arriveLocation = {
+          name: arriveRaw.Description,
+          location: arriveRaw.Position,
+        };
+        return newJourney;
+      });
+    const resolvedJourneys = await Promise.all(journeys);
+    return res.json(resolvedJourneys);
   } catch (e) {
-    return res.json(e);
+    console.log(e);
+    return res.status(500).json({ message: 'Error processing journey.' });
   }
 });
 
