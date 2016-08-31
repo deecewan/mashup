@@ -68,6 +68,7 @@ router.get('/journeys', async (req, res) => {
           name: arriveRaw.Description,
           location: arriveRaw.Position,
         };
+        // TODO: Make an array of journey legs.  Where they start, where they end, and what bus num
         return newJourney;
       });
     const resolvedJourneys = await Promise.all(journeys);
