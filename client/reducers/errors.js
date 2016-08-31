@@ -9,6 +9,8 @@ export default function (state = initialState, action) {
       return state.push(action.value);
     case errors.actions.CONSUME:
       return state.shift();
+    case errors.actions.ADD:
+      return state.push(action.value);
     default:
       return state;
   }

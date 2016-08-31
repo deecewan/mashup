@@ -22,6 +22,11 @@ class App extends React.Component {
   componentWillMount() {
     this.props.actions.user.restore();
     this.props.actions.shifts.getShifts();
+    this.props.actions.user.getLocation();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
   }
 
   openLogin() {
@@ -61,6 +66,7 @@ const mapDispatch = dispatch => ({
   actions: {
     user: {
       restore: () => dispatch(user.restore()),
+      getLocation: () => dispatch(user.asyncSetLocation()),
     },
     shifts: {
       getShifts: () => dispatch(shifts.getShifts()),

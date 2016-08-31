@@ -13,6 +13,10 @@ const Content = props => (
   <div>
     <p>Welcome, {props.user.name}.</p>
     <p>Your Tanda account is {props.user.Tanda ? 'Connected' : 'Not Yet Connected'}.</p>
+    {props.user.location
+      ? `Your location is (${props.user.location.latitude}, ${props.user.location.longitude})`
+      : 'Getting Location...'
+    }
     {getShiftCards(props.shifts)}
   </div>
 );
@@ -22,6 +26,7 @@ Content.propTypes = {
     name: PropTypes.string,
     email: PropTypes.string,
     Tanda: PropTypes.bool,
+    location: PropTypes.object,
   }),
   shifts: PropTypes.array,
 };

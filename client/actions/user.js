@@ -8,6 +8,7 @@ const actions = {
   ASYNC_LOGIN: 'USER_ASYNC_LOGIN',
   ASYNC_LOGOUT: 'USER_ASYNC_LOGOUT',
   ASYNC_RESTORE: 'USER_ASYNC_RESTORE',
+  SET_LOCATION: 'USER_SET_LOCATION',
 };
 
 const initialState = new Map({
@@ -89,5 +90,24 @@ export function restore() {
           dispatch(login(user));
         }
       });
+  };
+}
+
+export function setLocation(location) {
+  console.log('set action', location);
+  return {
+    type: actions.SET_LOCATION,
+    value: location,
+  };
+}
+
+export function asyncSetLocation() {
+  console.log('sync get');
+  return dispatch => {
+    navigator.geolocation.getCurrentPosition(location => {
+      dispatch(setLocation(location));
+    }, null, {
+      enableHighAccuracy: true, // get a better read on location
+    });
   };
 }
