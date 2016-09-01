@@ -6,7 +6,12 @@ const router = new Router();
 const tanda = new Tanda();
 const tl = new Translink(process.env.TRANSLINK_USERNAME, process.env.TRANSLINK_PASSWORD);
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
+  if (req.user.Tanda) {
+    return next();
+  }
+  return res.status(400).json({ message: 'Not connected to Tanda' });
+}, (req, res) => {
   if (!req.user) {
     return res.sendStatus(401);
   }
