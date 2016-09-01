@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import Tanda from '../../lib/tanda';
+import Uber from '../../lib/uber';
 import Translink from '../../lib/translink';
 
 const router = new Router();
 const tanda = new Tanda();
+const uber = new Uber();
 const tl = new Translink(process.env.TRANSLINK_USERNAME, process.env.TRANSLINK_PASSWORD);
 
 router.get('/', (req, res, next) => {
@@ -11,35 +13,36 @@ router.get('/', (req, res, next) => {
     return next();
   }
   return res.status(400).json({ message: 'Not connected to Tanda' });
-}, (req, res) => {
+}, async(req, res) => {
   if (!req.user) {
     return res.sendStatus(401);
   }
-  return tanda.getShifts(req.user)
-    .then(shifts => shifts.map(
-      shift => tanda.getDepartment(req.user, shift.department_id)
-          .then(department =>
-            tanda.getLocation(req.user, department.location_id)
-              .then(location => ({
-                start: shift.start,
-                finish: shift.finish,
-                department: {
-                  id: department.id,
-                  name: department.name,
-                  nickname: department.nickname,
-                  colour: department.colour,
-                },
-                location: {
-                  id: location.id,
-                  name: location.name,
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                },
-              }))
-          )
-      ))
-    .then(shifts => Promise.all(shifts))
-    .then(shifts => res.status(200).json(shifts));
+  let shifts = await tanda.getShifts(req.user);
+  shifts = shifts.map(async shift => {
+    const department = await tanda.getDepartment(req.user, shift.department_id);
+    console.log(department);
+    const location = await tanda.getLocation(req.user, department.location_id);
+    return {
+      start: shift.start,
+      finish: shift.finish,
+      department: {
+        id: department.id,
+        name: department.name,
+        nickname: department.nickname,
+        colour: department.colour,
+      },
+      location: {
+        id: location.id,
+        name: location.name,
+        latitude: location.latitude,
+        longitude: location.longitude,
+      }
+    };
+  });
+
+  return Promise.all(shifts).then(resolvedShifts => {
+    return res.status(200).json(resolvedShifts);
+  });
 });
 
 function getTimeFromJourney(t) {
@@ -47,7 +50,7 @@ function getTimeFromJourney(t) {
   return new Date(parseInt(x[1], 10));
 }
 
-router.get('/journeys', async (req, res) => {
+router.get('/journeys/translink', async(req, res) => {
   const currentLocation = req.query.currentLocation;
   const orgLocation = req.query.orgLocation;
   const startTime = req.query.startTime;
@@ -82,6 +85,18 @@ router.get('/journeys', async (req, res) => {
     console.log(e);
     return res.status(500).json({ message: 'Error processing journey.' });
   }
+});
+
+router.get('/journeys/uber', async(req, res) => {
+  const coords = {
+    start_latitude: req.query.start_latitude,
+    start_longitude: req.query.start_longitude,
+    end_latitude: req.query.end_latitude,
+    end_longitude: req.query.end_longitude,
+  };
+
+  uber.getPriceEstimate(req.user, coords)
+    .then(json => res.json(json));
 });
 
 export default router;
