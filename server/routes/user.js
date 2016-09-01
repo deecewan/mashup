@@ -17,6 +17,9 @@ router.get('/me', (req, res) => {
   if (user.Tanda) {
     user.Tanda = true;
   }
+  if (user.Uber) {
+    user.Uber = true;
+  }
   return res.status(200).json(user);
 });
 

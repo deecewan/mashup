@@ -10,7 +10,7 @@ passport.use(new LocalStrategy({
 }, (email, password, done) => {
   db.models.User.findOne({
     where: { email },
-    include: [db.models.Tanda],
+    include: [db.models.Tanda, db.models.Uber],
   }).then(user => {
     if (!user) {
       return done(null, false, { message: 'Incorrect Email Address' });
@@ -34,7 +34,7 @@ passport.deserializeUser((id, done) => {
     where: {
       id,
     },
-    include: [db.models.Tanda],
+    include: [db.models.Tanda, db.models.Uber],
   })
     .then(user => {
       if (!user) {

@@ -1,6 +1,6 @@
 export default function (sequelize, DataTypes) {
   const Uber = sequelize.define('Uber', {
-    accessToken: DataTypes.STRING,
+    accessToken: DataTypes.BLOB,
     refreshToken: DataTypes.STRING,
     expires: DataTypes.DATE,
   }, {

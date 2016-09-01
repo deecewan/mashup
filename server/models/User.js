@@ -11,6 +11,7 @@ export default function (sequelize, DataTypes) {
     classMethods: {
       associate: models => {
         User.hasOne(models.Tanda);
+        User.hasOne(models.Uber)
       },
     },
   });

@@ -1,7 +1,7 @@
 {
-  "name": "koa-playground",
+  "name": "mashup",
   "version": "0.0.1",
-  "description": "Connect a bunch of services to make life better",
+  "description": "An API Mashup for CAB432 Semester 2, 2016",
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./",
