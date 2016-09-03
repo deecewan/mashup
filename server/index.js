@@ -11,12 +11,14 @@ import Database from './models/index';
 import passport from './lib/passport';
 import routes from './routes';
 import Tanda from '../lib/tanda';
+import Uber from '../lib/uber';
 
 const HOUR = 3600;
 
 const db = new Database();
 db.syncModels();
 const tanda = new Tanda();
+const uber = new Uber();
 
 const app = new Router();
 
@@ -44,11 +46,16 @@ app.use((req, res, next) => {
   return next();
 });
 app.use((req, res, next) => tanda.refresh(req, res, next));
+app.use((req, res, next) => uber.refresh(req, res, next));
 app.use(routes);
 
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).send(err);
+  if (process.env.NODE_ENV === 'dev') {
+    return res.status(500).json(err);
+  }
+  res.status(500).json({ message: 'An unexpected error has occurred.' +
+  '  Please refresh and try again.' });
   return next();
 });
 

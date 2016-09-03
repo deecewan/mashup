@@ -19,30 +19,39 @@ router.get('/', (req, res, next) => {
   }
   let shifts = await tanda.getShifts(req.user);
   shifts = shifts.map(async shift => {
-    const department = await tanda.getDepartment(req.user, shift.department_id);
-    console.log(department);
-    const location = await tanda.getLocation(req.user, department.location_id);
-    return {
+    const newShift = {
       start: shift.start,
       finish: shift.finish,
       department: {
+        name: 'No Team',
+      }
+    };
+    if (shift.department_id != null) {
+      const department = await tanda.getDepartment(req.user, shift.department_id);
+      newShift.department = {
         id: department.id,
-        name: department.name,
-        nickname: department.nickname,
-        colour: department.colour,
-      },
-      location: {
+          name: department.name,
+          nickname: department.nickname,
+          colour: department.colour,
+      };
+
+      const location = await tanda.getLocation(req.user, department.location_id);
+
+      newShift.location = {
         id: location.id,
         name: location.name,
         latitude: location.latitude,
         longitude: location.longitude,
-      }
-    };
+      };
+    }
+
+    return newShift;
   });
 
   return Promise.all(shifts).then(resolvedShifts => {
     return res.status(200).json(resolvedShifts);
-  });
+  })
+    .catch(err => console.log(err));
 });
 
 function getTimeFromJourney(t) {

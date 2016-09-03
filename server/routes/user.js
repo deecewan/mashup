@@ -45,7 +45,7 @@ router.post('/logout', (req, res) => {
   res.sendStatus(200);
 })
 
-router.post('/signup', (req, res) => {
+router.post('/signup', (req, res, next) => {
   if (req.user) {
     return res.status(400).json({ message: 'You are already logged in.' });
   }
@@ -95,7 +95,7 @@ router.post('/signup', (req, res) => {
           }))[0],
         });
       }
-      console.log(err.message);
+      next(err);
       return res.sendStatus(500);
     });
 });
