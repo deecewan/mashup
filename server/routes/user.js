@@ -6,27 +6,26 @@ import hash from '../../lib/hasher';
 const db = new Database();
 const router = new Router();
 
+function santizeUser(user) {
+  const newUser = user;
+  delete newUser.password;
+  delete newUser.createdAt;
+  delete newUser.updatedAt;
+  return Object.assign({}, newUser, {
+    Tanda: !!(user.Tanda),
+    Uber: !!(user.Uber),
+  });
+}
+
 router.get('/me', (req, res) => {
   if (!req.user) {
     return res.sendStatus(401);
   }
-  const user = req.user.toJSON();
-  delete user.password;
-  delete user.createdAt;
-  delete user.updatedAt;
-  user.Tanda = !!(user.Tanda);
-  user.Uber = !!(user.Uber);
-  return res.status(200).json(user);
+  return res.status(200).json(santizeUser(req.user.toJSON()));
 });
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
-    const loggedInUser = user.toJSON();
-    delete loggedInUser.password;
-    delete loggedInUser.createdAt;
-    delete loggedInUser.updatedAt;
-    loggedInUser.Tanda = !!(loggedInUser.Tanda);
-    loggedInUser.Uber = !!(loggedInUser.Uber);
     if (err) {
       return next(err);
     }
@@ -37,7 +36,7 @@ router.post('/login', (req, res, next) => {
       if (loginErr) {
         return next(err);
       }
-      return res.status(200).json(loggedInUser);
+      return res.status(200).json(santizeUser(req.user.toJSON()));
     });
   })(req, res, next);
 });
