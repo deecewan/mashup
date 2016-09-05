@@ -55,7 +55,6 @@ class ModalLogin extends React.Component {
         ]}
         title="Log in to Mashup"
         onRequestClose={this.props.hideLogin}
-        modal
       >
         <TextField
           hintText="Email"

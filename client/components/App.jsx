@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import Content from './Content';
 import Header from './Header';
 import ModalLogin from './ModalLogin';
+import Index from './Index';
+import Container from './Container';
 import * as user from '../actions/user';
 // import * as errors from '../actions/errors';
 import * as shifts from '../actions/shifts';
@@ -25,10 +27,6 @@ class App extends React.Component {
     this.props.actions.user.getLocation();
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-  }
-
   openLogin() {
     this.setState({
       showLogin: true,
@@ -41,6 +39,14 @@ class App extends React.Component {
     });
   }
 
+  selectiveRender() {
+    if (this.props.user.get('name')) {
+      return <Content />;
+    }
+
+    return <Index />;
+  }
+
   render() {
     return (
       <div>
@@ -51,7 +57,9 @@ class App extends React.Component {
           {...this.props}
         />
         <Header {...this.props} openLogin={this.openLogin} />
-        <Content />
+        <Container>
+          {this.selectiveRender()}
+        </Container>
       </div>
     );
   }

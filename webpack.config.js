@@ -1,6 +1,13 @@
 import webpack from 'webpack';
 import path from 'path';
 import Dash from 'webpack-dashboard/plugin'; // eslint-disable-line
+import qs from 'querystring';
+
+const cssQuery = qs.stringify({
+  modules: true,
+  importLoaders: 1,
+  localIdentName: '[path][name]-[local]',
+});
 
 export default {
   entry: [
@@ -13,7 +20,7 @@ export default {
     filename: 'bundle.js',
     publicPath: '/',
   },
-  devtool: 'inline-source-map',
+  devtool: 'eval',
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
@@ -50,6 +57,11 @@ export default {
       {
         test: /\.json$/,
         loader: 'json-loader',
+      },
+      {
+        test: /\.css$/,
+        include: path.join(__dirname, 'client', 'styles'),
+        loader: `style-loader!css-loader?${cssQuery}`,
       },
     ],
   },

@@ -14,17 +14,19 @@ router.get('/me', (req, res) => {
   delete user.password;
   delete user.createdAt;
   delete user.updatedAt;
-  if (user.Tanda) {
-    user.Tanda = true;
-  }
-  if (user.Uber) {
-    user.Uber = true;
-  }
+  user.Tanda = !!(user.Tanda);
+  user.Uber = !!(user.Uber);
   return res.status(200).json(user);
 });
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
+    const loggedInUser = user.toJSON();
+    delete loggedInUser.password;
+    delete loggedInUser.createdAt;
+    delete loggedInUser.updatedAt;
+    loggedInUser.Tanda = !!(loggedInUser.Tanda);
+    loggedInUser.Uber = !!(loggedInUser.Uber);
     if (err) {
       return next(err);
     }
@@ -35,7 +37,7 @@ router.post('/login', (req, res, next) => {
       if (loginErr) {
         return next(err);
       }
-      return res.status(200).json(user);
+      return res.status(200).json(loggedInUser);
     });
   })(req, res, next);
 });
@@ -43,7 +45,7 @@ router.post('/login', (req, res, next) => {
 router.post('/logout', (req, res) => {
   req.logout();
   res.sendStatus(200);
-})
+});
 
 router.post('/signup', (req, res, next) => {
   if (req.user) {

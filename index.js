@@ -6,9 +6,8 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import config from './webpack.config';
-
-// set up the environment
 import loadConfig from './lib/loadConfig';
+// set up the environment
 loadConfig('development');
 
 const app = express();
@@ -45,7 +44,7 @@ compiler.plugin('done', () => {
 });
 
 const server = http.createServer(app);
-server.listen(3000, 'localhost', err => {
+server.listen(3000, '0.0.0.0', err => {
   if (err) throw err;
 
   const addr = server.address();

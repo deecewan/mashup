@@ -52,6 +52,28 @@ export function asyncLogin(request) {
     });
 }
 
+export function asyncSignup(request) {
+  return dispatch =>
+    fetch('/api/v1/user/signup', {
+      method: 'POST',
+      body: JSON.stringify(request),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }).then(res => {
+      if (!res.ok) {
+        return res.json()
+          .then(error => dispatch(errors.login(error)));
+      }
+      return res.json()
+        .then(u => {
+          dispatch(login(u));
+          dispatch(shifts.getShifts());
+        });
+    });
+}
+
 export function logout() {
   return {
     type: actions.LOGOUT,
@@ -94,7 +116,6 @@ export function restore() {
 }
 
 export function setLocation(location) {
-  console.log('set action', location);
   return {
     type: actions.SET_LOCATION,
     value: location,
@@ -102,7 +123,6 @@ export function setLocation(location) {
 }
 
 export function asyncSetLocation() {
-  console.log('sync get');
   return dispatch => {
     navigator.geolocation.getCurrentPosition(location => {
       dispatch(setLocation(location));
