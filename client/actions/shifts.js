@@ -8,8 +8,12 @@ const actions = {
   UPDATE_SHIFT: 'SHIFTS_UPDATE',
 };
 
-
 const initialState = new List();
+
+const mutex = {
+  translink: false,
+  uber: false,
+};
 
 export {
   initialState,
@@ -51,9 +55,10 @@ export function updateShift(shift) {
 
 export function asyncGetTranslink(shift) {
   return (dispatch, getState) => {
-    if (shift.translink) {
-      return null;
+    if (shift.translink || mutex.translink) {
+      return shift;
     }
+    mutex.translink = true;
     const user = getState().toObject().user.toObject();
     const startTime = moment(shift.start * 1000).format().replace('+', '%2B'); // url-encoded
     const q = `currentLocation[latitude]=${user.location.latitude}` +
@@ -75,7 +80,8 @@ export function asyncGetTranslink(shift) {
         }
         return res.json()
           .then(json => Object.assign({}, shift, { translink: json }))
-          .then(journeyedShift => dispatch(updateShift(journeyedShift)));
+          .then(journeyedShift => dispatch(updateShift(journeyedShift)))
+          .then(() => { mutex.translink = false; });
       });
   };
 }
@@ -83,9 +89,10 @@ export function asyncGetTranslink(shift) {
 
 export function asyncGetUber(shift) {
   return (dispatch, getState) => {
-    if (shift.uber) {
-      return null;
+    if (shift.uber || mutex.uber) {
+      return shift;
     }
+    mutex.uber = true;
     const user = getState().toObject().user.toObject();
     const q = `currentLocation[latitude]=${user.location.latitude}` +
       `&currentLocation[longitude]=${user.location.longitude}` +
@@ -105,7 +112,8 @@ export function asyncGetUber(shift) {
         }
         return res.json()
           .then(json => Object.assign({}, shift, { uber: json }))
-          .then(journeyedShift => dispatch(updateShift(journeyedShift)));
+          .then(journeyedShift => dispatch(updateShift(journeyedShift)))
+          .then(() => { mutex.uber = false; });
       });
   };
 }
