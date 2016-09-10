@@ -127,7 +127,7 @@ class ShiftCard extends React.Component {
     const option = this.props.uber[value];
     const duration = option.duration / 60;
     this.props.showModal(([
-      <h4 key={1}>Note: This is the current time only.  Future Uber is not a thing.</h4>,
+      <h4 key={1}>Note: This is for the current time only.  Future Uber is not a thing.</h4>,
       <p key={2}>Type: {option.display_name}.</p>,
       <p key={3}>Duration: {duration} minutes.</p>,
       <p key={4}>Estimated Price: {option.estimate}.</p>,
@@ -183,14 +183,12 @@ class ShiftCard extends React.Component {
             id="btn-uber"
             label="Uber"
             onTouchTap={() => this.handleClick('uber')}
-            onClick={() => this.handleClick('uber')}
             primary={this.state.currentShow === 'uber'}
           />
           <RaisedButton
             id="btn-translink"
             label="Translink"
             onTouchTap={() => this.handleClick('translink')}
-            onClick={() => this.handleClick('translink')}
             primary={this.state.currentShow === 'translink'}
           />
         </CardActions>
