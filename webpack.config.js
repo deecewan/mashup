@@ -20,7 +20,7 @@ export default {
     filename: 'bundle.js',
     publicPath: '/',
   },
-  devtool: 'eval',
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
