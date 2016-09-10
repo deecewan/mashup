@@ -93,15 +93,16 @@ class ShiftCard extends React.Component {
       ><b>Single Paper</b></MenuItem>,
     ];
     option.fares.forEach((fare, i) => {
+      const key = i + 5;
       if (fare.Name.includes('go card')) {
         return goCard.push(<MenuItem
-          key={i}
+          key={key}
           primaryText={`${fare.Name.replace('go card ', '')}: $${fare.Price}`}
         />);
       }
       return paper.push(
         <MenuItem
-          key={i}
+          key={key}
           primaryText={`${fare.Name.replace('Single paper ', '')}: $${fare.Price}`}
         />
       );
