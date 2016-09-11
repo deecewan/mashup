@@ -6,19 +6,37 @@ import Header from './Header';
 import ModalLogin from './ModalLogin';
 import Index from './Index';
 import Container from './Container';
+import MenuDrawer from './MenuDrawer';
 import * as user from '../actions/user';
 // import * as errors from '../actions/errors';
 import * as shifts from '../actions/shifts';
 
 class App extends React.Component {
 
+  static showChromeWarning() {
+    const ret = [];
+    if (!('chrome' in window)) {
+      ret.push(<p key={1} className="chrome-warning">
+        Sorry, we only support <a href="http://chrome.google.com">Chrome</a>.
+      </p>);
+    }
+    if (navigator.platform !== 'Android') {
+      ret.push(<p key={2} className="android-warning">
+        For best results, we recommend an Android phone.
+      </p>);
+    }
+    return ret;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       showLogin: false,
+      showDrawer: false,
     };
     this.openLogin = this.openLogin.bind(this);
     this.hideLogin = this.hideLogin.bind(this);
+    this.toggleDrawer = this.toggleDrawer.bind(this);
   }
 
   componentWillMount() {
@@ -47,6 +65,16 @@ class App extends React.Component {
     return <Index />;
   }
 
+  toggleDrawer(open) {
+    let show = !this.state.showDrawer;
+    if (open != null) {
+      show = open;
+    }
+    this.setState({
+      showDrawer: show,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -56,8 +84,10 @@ class App extends React.Component {
           hideLogin={this.hideLogin}
           {...this.props}
         />
-        <Header {...this.props} openLogin={this.openLogin} />
+        <MenuDrawer drawerOpen={this.state.showDrawer} toggleOpen={this.toggleDrawer} />
+        <Header {...this.props} openLogin={this.openLogin} toggleDrawer={this.toggleDrawer} />
         <Container>
+          {App.showChromeWarning()}
           {this.selectiveRender()}
         </Container>
       </div>

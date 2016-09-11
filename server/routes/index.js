@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import path from 'path';
 import fs from 'fs';
 
@@ -13,6 +13,8 @@ fs
     const route = require(path.resolve(__dirname, file)).default;
     router.use(`/api/v1/${routeName}`, route);
   });
+
+router.use('/static', express.static(path.join(__dirname, '..', 'static')));
 
 router.get('/styles.css', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'dist', 'styles.css'));

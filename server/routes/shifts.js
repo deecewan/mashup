@@ -58,7 +58,7 @@ router.get('/', (req, res, next) => {
     .catch(err => console.log(err));
 });
 
-function getTimeFromJourney(t) {
+function getTimeFromTranslink(t) {
   const x = t.match(/\/Date\((\d*)\+.*\)/);
   return new Date(parseInt(x[1], 10));
 }
@@ -74,24 +74,46 @@ router.get('/journeys/translink', async(req, res) => {
       orgLocation.longitude)).Suggestions[0].Id;
     const journeys = await tl.getJourneys(startLocation, endLocation, startTime);
     const journeyMap = journeys.TravelOptions.Itineraries.map(async function mapJourney(journey) {
-        const newJourney = {};
-        newJourney.leaveTime = getTimeFromJourney(journey.FirstDepartureTime);
-        newJourney.duration = journey.DurationMins;
-        newJourney.arriveTime = getTimeFromJourney(journey.EndTime);
-        const departRaw = await tl.getStop(journey.Legs[0].ToStopId);
-        newJourney.departLocation = {
-          name: departRaw.Description,
-          location: departRaw.Position,
-        };
-        const arriveRaw = await
-          tl.getStop(journey.Legs[journey.Legs.length - 1].FromStopId);
-        newJourney.arriveLocation = {
-          name: arriveRaw.Description,
-          location: arriveRaw.Position,
-        };
-        newJourney.fares = journey.Fare.Fares;
-        // TODO: Make an array of journey legs.  Where they start, where they end, and what bus num
-        return newJourney;
+      const newJourney = {};
+      newJourney.leaveTime = getTimeFromTranslink(journey.StartTime);
+      newJourney.duration = journey.DurationMins;
+      newJourney.arriveTime = getTimeFromTranslink(journey.EndTime);
+      newJourney.fares = journey.Fare.Fares;
+      // TODO: Make an array of journey legs.  Where they start, where they end, and what bus num
+      const legMap = journey.Legs.map(async function mapLeg(leg) {
+        console.log(leg);
+        const newLeg = {};
+        newLeg.leaveTime = getTimeFromTranslink(leg.DepartureTime);
+        newLeg.duration = leg.DurationMins;
+        newLeg.arriveTime = getTimeFromTranslink(leg.ArrivalTime);
+        newLeg.route = leg.Route;
+        newLeg.instruction = leg.Instruction;
+        if (leg.FromStopId) {
+          const departRaw = await tl.getStop(leg.FromStopId);
+          newLeg.departLocation = {
+            name: departRaw.Description,
+            location: departRaw.Position,
+          };
+        } else {
+          newLeg.departLocation = false;
+        }
+
+        if (leg.ToStopId) {
+          const arriveRaw = await tl.getStop(leg.ToStopId);
+          newLeg.arriveLocation = {
+            name: arriveRaw.Description,
+            location: arriveRaw.Position,
+          };
+        } else {
+          newLeg.arriveLocation = false;
+        }
+        return newLeg;
+      });
+      newJourney.legs = await Promise.all(legMap);
+      console.log(newJourney.legs);
+      newJourney.departLocation = newJourney.legs[0].arriveLocation;
+      newJourney.arriveLocation = newJourney.legs[newJourney.legs.length - 1].departLocation;
+      return newJourney;
       });
     const resolvedJourneys = await Promise.all(journeyMap);
     return res.json(resolvedJourneys);

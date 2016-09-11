@@ -77,6 +77,17 @@ class ShiftCard extends React.Component {
     }
   }
 
+  renderLegs(legs) {
+    return legs.map((leg, i) => {
+      if (leg.departLocation === false) {
+        return <p key={i} dangerouslySetInnerHTML={{ __html: leg.instruction }} />;
+      } else if (leg.arriveLocation === false) {
+        return <p key={i}>{leg.instruction}</p>;
+      }
+      return <p key={i}>Go from {leg.departLocation.name} to {leg.arriveLocation.name}.</p>;
+    });
+  }
+
   renderTranslinkModal(e, index, value) {
     const option = this.props.translink[value];
     const leaveTime = moment(option.leaveTime);
@@ -113,7 +124,7 @@ class ShiftCard extends React.Component {
       ...paper,
     ];
 
-    this.props.showModal([
+    const modal = [
       <p key={1}>Duration: {option.duration} minutes.</p>,
       <p key={2}>Departing: {option.departLocation.name}.</p>,
       <p key={3}>You should leave your current location {leaveTime.calendar()}.</p>,
@@ -121,7 +132,11 @@ class ShiftCard extends React.Component {
       <SelectField value={-1}>
         {fares}
       </SelectField>,
-    ]);
+      <h4>Legs</h4>,
+      this.renderLegs(option.legs),
+    ];
+
+    this.props.showModal(modal);
   }
 
   renderUberModal(e, index, value) {
@@ -185,12 +200,14 @@ class ShiftCard extends React.Component {
             label="Uber"
             onTouchTap={() => this.handleClick('uber')}
             primary={this.state.currentShow === 'uber'}
+            disabled={!this.props.location}
           />
           <RaisedButton
             id="btn-translink"
             label="Translink"
             onTouchTap={() => this.handleClick('translink')}
             primary={this.state.currentShow === 'translink'}
+            disabled={!this.props.location}
           />
         </CardActions>
       </Card>

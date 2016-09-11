@@ -9,6 +9,7 @@ const Header = props => (
   <AppBar
     style={styles}
     title="Mashup"
+    onLeftIconButtonTouchTap={() => props.toggleDrawer()}
     iconStyleRight={{
       marginTop: '0',
       alignSelf: 'center',
@@ -21,6 +22,7 @@ const Header = props => (
 
 Header.propTypes = {
   name: PropTypes.string,
+  toggleDrawer: PropTypes.func,
 };
 
 const mapStateToProps = state => state.get('user').toObject();

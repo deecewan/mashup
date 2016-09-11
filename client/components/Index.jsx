@@ -39,7 +39,8 @@ class Index extends React.Component {
     this.setState(previousState);
   }
 
-  doLogin() {
+  doLogin(e) {
+    e.preventDefault();
     const { email, password } = this.state.login;
     this.props.asyncLogin({ email, password });
   }
@@ -59,24 +60,26 @@ class Index extends React.Component {
         <h4>Find the best public transport routes to work and back.</h4>
 
         <h3>Login</h3>
-        <TextField
-          style={styles}
-          hintText="Email Address"
-          floatingLabelText="Email Address"
-          onChange={e => this.handleChange(e)}
-          value={this.state.login.email}
-          id="login-email"
-        />
-        <TextField
-          style={styles}
-          hintText="Password"
-          type="password"
-          floatingLabelText="Password"
-          onChange={e => this.handleChange(e)}
-          value={this.state.login.password}
-          id="login-password"
-        />
-        <RaisedButton label="Login" onClick={() => this.doLogin()} fullWidth primary />
+        <form onSubmit={e => this.doLogin(e)}>
+          <TextField
+            style={styles}
+            hintText="Email Address"
+            floatingLabelText="Email Address"
+            onChange={e => this.handleChange(e)}
+            value={this.state.login.email}
+            id="login-email"
+          />
+          <TextField
+            style={styles}
+            hintText="Password"
+            type="password"
+            floatingLabelText="Password"
+            onChange={e => this.handleChange(e)}
+            value={this.state.login.password}
+            id="login-password"
+          />
+          <RaisedButton label="Login" type="submit" fullWidth primary />
+        </form>
         <h3>Signup</h3>
         <TextField
           style={styles}
