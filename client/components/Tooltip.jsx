@@ -58,7 +58,7 @@ export default class Tooltip extends React.Component {
   render() {
     return (
       <span
-        style={{ position: 'relative', margin: '7px' }}
+        style={{ position: 'relative' }}
         onMouseEnter={this.onHover}
         onMouseLeave={this.offHover}
       >

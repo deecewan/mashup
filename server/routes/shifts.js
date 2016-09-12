@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import Tanda from '../../lib/tanda';
-import Uber from '../../lib/uber';
-import Translink from '../../lib/translink';
+import Tanda from '../lib/tanda';
+import Uber from '../lib/uber';
+import Translink from '../lib/translink';
 
 const router = new Router();
 const tanda = new Tanda();

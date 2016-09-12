@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Card, CardTitle, CardText, MenuItem, SelectField,
-  CardActions, Chip, RaisedButton } from 'material-ui';
+  CardActions, Chip, RaisedButton, CircularProgress } from 'material-ui';
 import moment from 'moment';
 import styles from '../styles/ShiftCard';
 import { asyncGetTranslink, asyncGetUber } from '../actions/shifts';
@@ -15,6 +15,7 @@ class ShiftCard extends React.Component {
       expanded: false,
       currentShow: '',
       currentText: '',
+      showHint: false,
     };
     this.renderTranslinkModal = this.renderTranslinkModal.bind(this);
     this.renderUberModal = this.renderUberModal.bind(this);
@@ -38,7 +39,7 @@ class ShiftCard extends React.Component {
       return (<div>No Location Specified...</div>);
     }
     return (<div>
-      Your shift is at {location.name} ({location.latitude}, {location.longitude})
+      Your shift is at {location.name}.
     </div>);
   }
 
@@ -56,6 +57,44 @@ class ShiftCard extends React.Component {
     return `${s.calendar()} (ending ${fString})`;
   }
 
+  getActions() {
+    const buttons = [
+      <RaisedButton
+        id="btn-uber"
+        label="Uber"
+        onTouchTap={() => this.handleClick('uber')}
+        primary={this.state.currentShow === 'uber'}
+        disabled={!this.props.location}
+        style={{ marginRight: '8px' }}
+      />,
+      <RaisedButton
+        id="btn-translink"
+        label="Translink"
+        onTouchTap={() => this.handleClick('translink')}
+        primary={this.state.currentShow === 'translink'}
+        disabled={!this.props.location}
+        style={{ marginRight: '8px' }}
+      />,
+    ];
+    if (this.props.location) {
+      return buttons;
+    }
+    return (
+      <Tooltip label="No Work Location Set" location="top">
+        {buttons}
+      </Tooltip>
+    );
+  }
+
+  setMapLocation() {
+    const { location } = this.props;
+    if (!location) {
+      return null;
+    }
+    return this.props.setWork({
+      ...location,
+    });
+  }
 
   handleClick(type) {
     if (type === this.state.currentShow) {
@@ -64,7 +103,7 @@ class ShiftCard extends React.Component {
       // swap out the other text
       const name = `${type.charAt(0).toUpperCase()}${type.slice(1)}`;
       const fn = this[`render${name}Options`];
-      let text = `Loading ${name} journeys...`;
+      let text = <span><CircularProgress size={0.5} />Loading {name} journeys...</span>;
       if (this.props[type]) {
         text = fn(this.props[type]);
       } else {
@@ -182,11 +221,20 @@ class ShiftCard extends React.Component {
 
   render() {
     return (
-      <Card style={styles.base} expanded={this.state.expanded}>
+      <Card
+        style={styles.base}
+        expanded={this.state.expanded}
+        onClick={() => this.setMapLocation()}
+        onMouseEnter={() => this.setState({ showHint: true })}
+        onMouseLeave={() => this.setState({ showHint: false })}
+      >
         <CardTitle title={'Upcoming Shift.'}>
           <Chip backgroundColor={this.props.department.colour || '#DDDDDD'} >
             {this.props.department.name || 'No Team'}
           </Chip>
+          <p style={{ display: this.state.showHint ? 'inline-block' : 'none' }}>
+            Click me to show location on the map.
+          </p>
         </CardTitle>
         <CardText>
           You have a shift at {this.getRelativeDay()}.
@@ -196,22 +244,7 @@ class ShiftCard extends React.Component {
           {this.state.currentText}
         </CardText>
         <CardActions style={styles.actions}>
-          <Tooltip label="Test Label" location="left">
-            <RaisedButton
-              id="btn-uber"
-              label="Uber"
-              onTouchTap={() => this.handleClick('uber')}
-              primary={this.state.currentShow === 'uber'}
-              disabled={!this.props.location}
-            />
-          </Tooltip>
-          <RaisedButton
-            id="btn-translink"
-            label="Translink"
-            onTouchTap={() => this.handleClick('translink')}
-            primary={this.state.currentShow === 'translink'}
-            disabled={!this.props.location}
-          />
+          {this.getActions()}
         </CardActions>
       </Card>
     );
@@ -228,6 +261,7 @@ ShiftCard.propTypes = {
   showModal: PropTypes.func,
   asyncGetTranslink: PropTypes.func,
   asyncGetUber: PropTypes.func,
+  setWork: PropTypes.func,
   translink: PropTypes.array,
   uber: PropTypes.array,
 };

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Dialog, RaisedButton } from 'material-ui';
 
 import ShiftCard from './ShiftCard';
+import Map from './Map';
 import { asyncSetLocation } from '../actions/user';
 
 class Content extends React.Component {
@@ -13,9 +14,11 @@ class Content extends React.Component {
     this.state = {
       showModal: false,
       modal: '',
+      work: null,
     };
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.setWork = this.setWork.bind(this);
   }
 
   componentWillMount() {
@@ -25,8 +28,17 @@ class Content extends React.Component {
   getShiftCards() {
     const cards = [];
     this.props.shifts.forEach((shift, i) =>
-      cards.push(<ShiftCard key={i} {...shift.toObject()} showModal={this.showModal} />));
+      cards.push(<ShiftCard
+        key={i}
+        {...shift.toObject()}
+        showModal={this.showModal}
+        setWork={this.setWork}
+      />));
     return cards;
+  }
+
+  setWork(work) {
+    this.setState({ work });
   }
 
   hideModal() {
@@ -52,11 +64,7 @@ class Content extends React.Component {
         </Dialog>
         <h2>Welcome, {this.props.user.name}.</h2>
         <p>Your Tanda account is {this.props.user.Tanda ? 'Connected' : 'Not Yet Connected'}.</p>
-        {this.props.user.location
-          ? `Your location is (${this.props.user.location.latitude},` +
-        `${this.props.user.location.longitude})`
-          : 'Getting Location...'
-        }
+        <Map location={this.props.user.location} work={this.state.work} />
         {this.getShiftCards()}
       </div>
     );

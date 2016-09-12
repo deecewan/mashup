@@ -10,8 +10,8 @@ import morgan from 'morgan';
 import Database from './models/index';
 import passport from './lib/passport';
 import routes from './routes';
-import Tanda from '../lib/tanda';
-import Uber from '../lib/uber';
+import Tanda from './lib/tanda';
+import Uber from './lib/uber';
 
 const HOUR = 3600;
 

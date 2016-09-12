@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import Database from '../models';
 import passport from '../lib/passport';
-import hash from '../../lib/hasher';
+import hash from '../lib/hasher';
 
 const db = new Database();
 const router = new Router();

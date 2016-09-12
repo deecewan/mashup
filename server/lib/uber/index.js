@@ -1,5 +1,5 @@
 import request from 'request-promise';
-import Database from '../../server/models';
+import Database from '../../models';
 
 let instance = null;
 

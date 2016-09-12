@@ -1,7 +1,7 @@
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import Database from '../models';
-import { verify } from '../../lib/hasher';
+import { verify } from './hasher';
 
 const db = new Database();
 

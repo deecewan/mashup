@@ -5,8 +5,8 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import config from './webpack.config';
-import loadConfig from './lib/loadConfig';
+import config from './webpack.config.babel';
+import loadConfig from './server/lib/loadConfig';
 // set up the environment
 loadConfig('development');
 
