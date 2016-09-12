@@ -20,6 +20,10 @@ router.get('/styles.css', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'client', 'styles', 'styles.css'));
 });
 
+router.get('/bundle.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'dist', 'bundle.js'));
+});
+
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'dist', 'index.html'));
 });

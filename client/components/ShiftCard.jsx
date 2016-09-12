@@ -232,9 +232,12 @@ class ShiftCard extends React.Component {
           <Chip backgroundColor={this.props.department.colour || '#DDDDDD'} >
             {this.props.department.name || 'No Team'}
           </Chip>
-          <p style={{ display: this.state.showHint ? 'inline-block' : 'none' }}>
-            Click me to show location on the map.
-          </p>
+          {this.props.location ?
+            <span
+              className={this.state.showHint ? 'hint fade-in' : 'hint'}
+            >
+              Click me to show location on the map.
+            </span> : ''}
         </CardTitle>
         <CardText>
           You have a shift at {this.getRelativeDay()}.

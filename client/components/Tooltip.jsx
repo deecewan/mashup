@@ -20,7 +20,7 @@ export default class Tooltip extends React.Component {
   getClass() {
     let classes = 'tooltip';
     if (this.state.show) {
-      classes += ' tooltip-show';
+      classes += ' fade-in';
     }
     return classes;
   }

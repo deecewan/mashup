@@ -9,7 +9,7 @@
     "build:index": "babel index.js -o index-compiled.js",
     "build:server": "babel server -d out",
     "run": "nodemon app.js",
-    "serve:dev": "NODE_ENV=dev babel-node index.js",
+    "serve:dev": "NODE_ENV=development babel-node index.js",
     "dash:serve:dev": "webpack-dashboard -- babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
