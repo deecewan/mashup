@@ -11,6 +11,28 @@ h1, h2, h3, h4, h5, h6 {
     transition: opacity .25s ease-in-out;
 }
 
+.tooltip {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s linear;
+    position: absolute;
+    padding: 5px;
+    color: #FFF;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    z-index: 100;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(0,0,0,.5);
+
+}
+
+.tooltip-show {
+    visibility: visible;
+    opacity: 1;
+}
+
 .fade-leave {
     opacity: 1;
 }

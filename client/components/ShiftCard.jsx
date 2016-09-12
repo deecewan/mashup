@@ -5,6 +5,7 @@ import { Card, CardTitle, CardText, MenuItem, SelectField,
 import moment from 'moment';
 import styles from '../styles/ShiftCard';
 import { asyncGetTranslink, asyncGetUber } from '../actions/shifts';
+import Tooltip from './Tooltip';
 
 class ShiftCard extends React.Component {
 
@@ -82,7 +83,7 @@ class ShiftCard extends React.Component {
       if (leg.departLocation === false) {
         return <p key={i} dangerouslySetInnerHTML={{ __html: leg.instruction }} />;
       } else if (leg.arriveLocation === false) {
-        return <p key={i}>{leg.instruction}</p>;
+        return <p key={i} dangerouslySetInnerHTML={{ __html: leg.instruction }} />;
       }
       return <p key={i}>Go from {leg.departLocation.name} to {leg.arriveLocation.name}.</p>;
     });
@@ -195,13 +196,15 @@ class ShiftCard extends React.Component {
           {this.state.currentText}
         </CardText>
         <CardActions style={styles.actions}>
-          <RaisedButton
-            id="btn-uber"
-            label="Uber"
-            onTouchTap={() => this.handleClick('uber')}
-            primary={this.state.currentShow === 'uber'}
-            disabled={!this.props.location}
-          />
+          <Tooltip label="Test Label" location="left">
+            <RaisedButton
+              id="btn-uber"
+              label="Uber"
+              onTouchTap={() => this.handleClick('uber')}
+              primary={this.state.currentShow === 'uber'}
+              disabled={!this.props.location}
+            />
+          </Tooltip>
           <RaisedButton
             id="btn-translink"
             label="Translink"

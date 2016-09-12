@@ -17,7 +17,7 @@ fs
 router.use('/static', express.static(path.join(__dirname, '..', 'static')));
 
 router.get('/styles.css', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'dist', 'styles.css'));
+  res.sendFile(path.join(__dirname, '..', '..', 'client', 'styles', 'styles.css'));
 });
 
 router.get('/', (req, res) => {
