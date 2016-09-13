@@ -4,3 +4,6 @@ dist/
 !dist/index.html
 !client/styles/styles.css
 .idea/
+
+out/
+*-compiled.js

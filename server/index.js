@@ -12,6 +12,9 @@ import passport from './lib/passport';
 import routes from './routes';
 import Tanda from './lib/tanda';
 import Uber from './lib/uber';
+import loadConfig from './lib/loadConfig';
+// set up the environment
+loadConfig();
 
 const HOUR = 3600;
 

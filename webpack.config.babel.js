@@ -9,10 +9,9 @@ const cssQuery = qs.stringify({
   localIdentName: '[path][name]-[local]',
 });
 
-export default {
+const config = {
   entry: [
     'babel-polyfill',
-    'webpack-hot-middleware/client',
     './client/index.jsx',
   ],
   output: {
@@ -50,8 +49,8 @@ export default {
             'es2015',
             'es2016',
             'stage-0',
-            'react-hmre',
           ],
+          plugins: ['transform-runtime'],
         },
       },
       {
@@ -66,9 +65,15 @@ export default {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
-    new Dash(),
   ],
 };
+
+if (process.env.NODE_ENV === 'development') {
+  config.entry.splice(1, 0, 'webpack-hot-middleware/client');
+  config.plugins.push(new webpack.HotModuleReplacementPlugin(), new Dash());
+  config.module.loaders[0].query.presets.push('react-hmre');
+}
+
+export default config;

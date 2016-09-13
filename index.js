@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import chokidar from 'chokidar';
 import http from 'http';
 import express from 'express';
@@ -5,14 +6,9 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import config from './webpack.config.babel';
-import loadConfig from './server/lib/loadConfig';
-import routes from './server';
-// set up the environment
-loadConfig('development');
-
 const app = express();
 if (process.env.NODE_ENV === 'development') {
+  const config = require('./webpack.config.babel').default;
   const compiler = webpack(config);
 
 // Serve hot-reloading bundle to client
@@ -45,6 +41,8 @@ if (process.env.NODE_ENV === 'development') {
     });
   });
 } else {
+  const routes = require('./out').default; // eslint-disable-line global-require
+
   app.use(routes);
 }
 

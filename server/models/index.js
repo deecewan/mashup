@@ -5,7 +5,7 @@ import Sequelize from 'sequelize';
 let db = null;
 
 export default class Database {
-  constructor(databaseUrl) {
+  constructor() {
     if (this.db) {
       return db;
     }
@@ -17,7 +17,7 @@ export default class Database {
         this.url = 'mysql://mashu[@localhost:3306/mashup_test';
         break;
       default:
-        this.url = process.env.DATABASE_URL || databaseUrl;
+        this.url = process.env.DATABASE_URL || 'mysql://mashup@localhost:3306/mashup';
         break;
     }
     this.models = {};
