@@ -19,7 +19,6 @@ const config = {
     filename: 'bundle.js',
     publicPath: '/',
   },
-  devtool: 'inline-source-map',
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
@@ -74,6 +73,7 @@ if (process.env.NODE_ENV === 'development') {
   config.entry.splice(1, 0, 'webpack-hot-middleware/client');
   config.plugins.push(new webpack.HotModuleReplacementPlugin(), new Dash());
   config.module.loaders[0].query.presets.push('react-hmre');
+  config.devtool = 'inline-source-map';
 }
 
 export default config;

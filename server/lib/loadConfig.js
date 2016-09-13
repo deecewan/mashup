@@ -10,8 +10,6 @@ function loadConfig(forceEnv) {
     env = 'production';
   }
 
-  console.log(config[env]);
-
   Object.keys(config[env]).forEach(key => {
     process.env[key] = config[env][key];
   });

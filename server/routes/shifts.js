@@ -6,7 +6,6 @@ import Translink from '../lib/translink';
 const router = new Router();
 const tanda = new Tanda();
 const uber = new Uber();
-console.log(process.env);
 const tl = new Translink(process.env.TRANSLINK_USERNAME, process.env.TRANSLINK_PASSWORD);
 
 router.get('/', (req, res, next) => {

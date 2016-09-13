@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import redisStore from 'connect-redis';
 import morgan from 'morgan';
 
-import loadConfig from './lib/loadConfig';
+import './lib/loadConfig';
 
 // Project imports
 import Database from './models/index';
