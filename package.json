@@ -10,8 +10,9 @@
     "build:index": "babel index.js -o index-compiled.js",
     "build:server": "babel server -d out",
     "clean": "rimraf index-compiled.js out dist/bundle.js",
-    "serve:dev": "NODE_ENV=development babel-node index.js",
     "dash:serve:dev": "webpack-dashboard -- babel-node index.js",
+    "serve:dev": "NODE_ENV=development babel-node index.js",
+    "start": "forever --uid \"mashup\" start index-compiled.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "David Buchan-Swanson (@deecewan)",
@@ -75,6 +76,7 @@
     "eslint-plugin-import": "^1.13.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.0",
+    "forever": "^0.15.2",
     "nodemon": "^1.10.0",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
