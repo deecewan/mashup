@@ -1,3 +1,4 @@
+// eslint-disable import/no-named-as-default-member
 import { List } from 'immutable';
 import moment from 'moment';
 import errors from './errors';
