@@ -25,16 +25,28 @@ export default class AvatarChip extends React.Component {
     });
   }
 
-  handleTanda(event) {
-    if (event) {
-      console.log('handling');
-      window.location.href = '/api/v1/auth/tanda';
+  handleTanda() {
+    window.location.href = '/api/v1/auth/tanda';
+    return null;
+  }
+
+  getTanda() {
+    if (this.props.Tanda) {
       return null;
     }
-    if (!this.props.Tanda) {
-      return <MenuItem primaryText="Connect Tanda" onTouchTap={e => this.handleTanda(e)} />;
-    }
+    return <MenuItem primaryText="Connect Tanda" onTouchTap={e => this.handleTanda(e)} />;
+  }
+
+  handleUber() {
+    window.location.href = '/api/v1/auth/uber';
     return null;
+  }
+
+  getUber() {
+    if (this.props.Uber) {
+      return null;
+    }
+    return <MenuItem primaryText="Connect Uber" onTouchTap={e => this.handleUber(e)} />;
   }
 
   handleLogout() {
@@ -63,7 +75,8 @@ export default class AvatarChip extends React.Component {
         onRequestClose={() => this.handleClose()}
       >
         <Menu>
-          {this.handleTanda()}
+          {this.getTanda()}
+          {this.getUber()}
           <MenuItem primaryText="Logout" onTouchTap={() => this.handleLogout()} />
         </Menu>
       </Popover>
@@ -76,6 +89,7 @@ AvatarChip.propTypes = {
   name: PropTypes.string,
   photo: PropTypes.string,
   Tanda: PropTypes.bool,
+  Uber: PropTypes.bool,
   openLogin: PropTypes.func,
   asyncLogout: PropTypes.func,
 };
