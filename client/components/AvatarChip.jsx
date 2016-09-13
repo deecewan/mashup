@@ -10,6 +10,20 @@ export default class AvatarChip extends React.Component {
     };
   }
 
+  getUber() {
+    if (this.props.Uber) {
+      return null;
+    }
+    return <MenuItem primaryText="Connect Uber" onTouchTap={e => this.handleUber(e)} />;
+  }
+
+  getTanda() {
+    if (this.props.Tanda) {
+      return null;
+    }
+    return <MenuItem primaryText="Connect Tanda" onTouchTap={e => this.handleTanda(e)} />;
+  }
+
   handleClick(e) {
     e.preventDefault();
 
@@ -30,23 +44,9 @@ export default class AvatarChip extends React.Component {
     return null;
   }
 
-  getTanda() {
-    if (this.props.Tanda) {
-      return null;
-    }
-    return <MenuItem primaryText="Connect Tanda" onTouchTap={e => this.handleTanda(e)} />;
-  }
-
   handleUber() {
     window.location.href = '/api/v1/auth/uber';
     return null;
-  }
-
-  getUber() {
-    if (this.props.Uber) {
-      return null;
-    }
-    return <MenuItem primaryText="Connect Uber" onTouchTap={e => this.handleUber(e)} />;
   }
 
   handleLogout() {
