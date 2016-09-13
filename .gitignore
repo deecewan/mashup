@@ -1,7 +1,7 @@
 config.json
 node_modules/
-dist/
 !dist/index.html
+dist/bundle.js
 !client/styles/styles.css
 .idea/
 
