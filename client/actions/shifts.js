@@ -1,7 +1,5 @@
-// eslint-disable import/no-named-as-default-member
 import { List } from 'immutable';
 import moment from 'moment';
-import errors from './errors';
 
 const actions = {
   ADD: 'SHIFTS_ADD',
@@ -69,7 +67,7 @@ export function asyncGetTranslink(shift) {
       `&startTime=${startTime}`;
 
     if (!user.location.latitude) {
-      return dispatch(errors.add({ message: 'Current location not found.  Please make sure' +
+      return dispatch(console.error({ message: 'Current location not found.  Please make sure' +
       ' you have location enabled for this application.' }));
     }
 
@@ -77,7 +75,7 @@ export function asyncGetTranslink(shift) {
       .then(res => {
         if (!res.ok) {
           return res.json()
-            .then(error => dispatch(errors.add(error)));
+            .then(error => console.error(error));
         }
         return res.json()
           .then(json => Object.assign({}, shift, { translink: json }))
@@ -101,7 +99,7 @@ export function asyncGetUber(shift) {
       `&orgLocation[longitude]=${shift.location.longitude}`;
 
     if (!user.location.latitude) {
-      return dispatch(errors.add({ message: 'Current location not found.  Please make sure' +
+      return dispatch(console.error({ message: 'Current location not found.  Please make sure' +
       ' you have location enabled for this application.' }));
     }
 
@@ -109,7 +107,7 @@ export function asyncGetUber(shift) {
       .then(res => {
         if (!res.ok) {
           return res.json()
-            .then(error => dispatch(errors.add(error)));
+            .then(error => dispatch(console.error(error)));
         }
         return res.json()
           .then(json => Object.assign({}, shift, { uber: json }))
