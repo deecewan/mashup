@@ -1,6 +1,6 @@
 import config from '../../config.json';
 
-export default function (forceEnv) {
+function loadConfig(forceEnv) {
   let env = null;
   if (forceEnv) {
     env = forceEnv;
@@ -10,7 +10,12 @@ export default function (forceEnv) {
     env = 'production';
   }
 
+  console.log(config[env]);
+
   Object.keys(config[env]).forEach(key => {
     process.env[key] = config[env][key];
   });
 }
+
+// set up the environment
+loadConfig();

@@ -9,7 +9,7 @@
     "build:client": "webpack --config webpack.config.babel.js",
     "build:index": "babel index.js -o index-compiled.js",
     "build:server": "babel server -d out",
-    "run": "nodemon app.js",
+    "clean": "rimraf index-compiled.js out dist/bundle.js",
     "serve:dev": "NODE_ENV=development babel-node index.js",
     "dash:serve:dev": "webpack-dashboard -- babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -81,6 +81,7 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-devtools": "^3.3.1",
+    "rimraf": "^2.5.4",
     "style-loader": "^0.13.1",
     "webpack-dashboard": "^0.1.6"
   }

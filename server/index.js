@@ -6,15 +6,14 @@ import bodyParser from 'body-parser';
 import redisStore from 'connect-redis';
 import morgan from 'morgan';
 
+import loadConfig from './lib/loadConfig';
+
 // Project imports
 import Database from './models/index';
 import passport from './lib/passport';
 import routes from './routes';
 import Tanda from './lib/tanda';
 import Uber from './lib/uber';
-import loadConfig from './lib/loadConfig';
-// set up the environment
-loadConfig();
 
 const HOUR = 3600;
 
