@@ -93,4 +93,4 @@ password: cab432mashup
 4. Build the docker box
   - `docker build -t deecewan/workbus .`
 5. Run the box
-  - `docker run --name workbus -d -p 3000:3000 --link mysql:mysql --link redis:redis docker.io/mysql`
+  - `docker run --name workbus -d -p 3000:3000 --link mysql:mysql --link redis:redis deecewan/workbus`
