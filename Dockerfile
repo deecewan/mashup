@@ -15,7 +15,7 @@ RUN apt-get install -y build-essential libkrb5-dev python2.7
 RUN npm config set python /usr/bin/python2.7
 
 COPY ./ /usr/src/app
-RUN npm install --verbose # install deps
+RUN npm install # install deps
 RUN npm run clean   # remove previous builds
 RUN npm run build   # compile the source
 
