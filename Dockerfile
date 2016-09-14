@@ -11,6 +11,7 @@ WORKDIR /usr/src/app
 
 # add native bindings
 RUN apt-get update && apt-get upgrade -y libstdc++6
+RUN apt-get install build-essentials
 
 COPY ./ /usr/src/app
 RUN npm install # install deps
