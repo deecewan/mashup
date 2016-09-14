@@ -45,7 +45,6 @@ class ModalLogin extends React.Component {
   }
 
   render() {
-    this.showError();
     return (
       <Dialog
         open={this.props.showLogin}
