@@ -81,3 +81,16 @@ password: cab432mashup
 
 ## How to start
 `docker run -d --name workbus -p 8080:3000 --link mysql:mysql --link redis:redis -e MYSQL_SERVER=mysql://mashup:mashup@mysql/mashup -e REDIS_SERVER=redis deecewan/workbus`
+
+## Get Started
+
+1. MySQL docker
+  - `docker run -d --name mysql -e MYSQL_DATABASE=mashup -e MYSQL_USER=mashup -e MYSQL_PASSWORD=mashup -e MYSQL_ALLOW_EMPTY_PASSWORD=yes docker.io/mysql`
+2. Redis docker
+  - `docker run -d --name redis docker.io/redis`
+3. `git clone` the repo
+  - You'll want to use `-A` when SSHing in to take your keys with you
+4. Build the docker box
+  - `docker build -t deecewan/workbus .`
+5. Run the box
+  - `docker run --name workbus -d -p 3000:3000 --link mysql:mysql --link redis:redis docker.io/mysql`
