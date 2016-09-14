@@ -22,7 +22,6 @@ export default class Translink {
   }
 
   getLocationId(lat, long) {
-    console.log('laaaaat', lat, long);
     return request({
       uri: `${this.baseUrl}/location/rest/suggest`,
       qs: {

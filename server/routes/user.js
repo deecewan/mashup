@@ -87,7 +87,6 @@ router.post('/signup', (req, res, next) => {
     })
     .catch(err => {
       if (err.message === 'Validation error') {
-        console.log(err.errors);
         return res.status(400).json({
           message: 'Error creating user.',
           error: err.errors.map(error => ({

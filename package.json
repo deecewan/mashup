@@ -12,7 +12,7 @@
     "clean": "rimraf index-compiled.js out dist/bundle.js",
     "dash:serve:dev": "webpack-dashboard -- babel-node index.js",
     "serve:dev": "NODE_ENV=development babel-node index.js",
-    "start": "NODE_ENV=production forever --uid \"mashup\" start index-compiled.js",
+    "start": "NODE_ENV=production forever index-compiled.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "David Buchan-Swanson (@deecewan)",

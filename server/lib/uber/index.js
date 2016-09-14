@@ -41,7 +41,6 @@ export default class Uber {
         json: true,
       })
         .then(json => {
-          console.log(json);
           return this.db.models.Uber.create({
             accessToken: json.access_token,
             refreshToken: json.refresh_token,
@@ -109,8 +108,6 @@ export default class Uber {
   }
 
   getPriceEstimate(user, coords) {
-    console.log(user);
-    console.log(coords);
     const { start_latitude, start_longitude, end_latitude, end_longitude } = coords;
     const headers = this.getAuthHeaders(user.Uber);
 
@@ -124,6 +121,6 @@ export default class Uber {
       },
       headers,
       json: true,
-    }).then(json => { console.log(json); return json; });
+    });
   }
 }

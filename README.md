@@ -78,3 +78,6 @@ password: cab432mashup
 email: cab432@example.com
 
 password: cab432mashup
+
+## How to start
+`docker run -d --name workbus -p 8080:3000 --link mysql:mysql --link redis:redis -e MYSQL_SERVER=mysql://mashup:mashup@mysql/mashup -e REDIS_SERVER=redis deecewan/workbus`

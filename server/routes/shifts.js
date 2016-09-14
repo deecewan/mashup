@@ -81,7 +81,6 @@ router.get('/journeys/translink', async(req, res) => {
       newJourney.fares = journey.Fare.Fares;
       // TODO: Make an array of journey legs.  Where they start, where they end, and what bus num
       const legMap = journey.Legs.map(async function mapLeg(leg) {
-        console.log(leg);
         const newLeg = {};
         newLeg.leaveTime = getTimeFromTranslink(leg.DepartureTime);
         newLeg.duration = leg.DurationMins;
@@ -110,7 +109,6 @@ router.get('/journeys/translink', async(req, res) => {
         return newLeg;
       });
       newJourney.legs = await Promise.all(legMap);
-      console.log(newJourney.legs);
       newJourney.departLocation = newJourney.legs[0].arriveLocation;
       newJourney.arriveLocation = newJourney.legs[newJourney.legs.length - 1].departLocation;
       return newJourney;
@@ -118,13 +116,11 @@ router.get('/journeys/translink', async(req, res) => {
     const resolvedJourneys = await Promise.all(journeyMap);
     return res.json(resolvedJourneys);
   } catch (e) {
-    console.log(e);
     return res.status(500).json({ message: 'Error processing journey.' });
   }
 });
 
 router.get('/journeys/uber', async(req, res) => {
-  console.log('getting the endpoint');
   const start_latitude = req.query.currentLocation.latitude;
   const start_longitude = req.query.currentLocation.longitude;
   const end_latitude = req.query.orgLocation.latitude;
@@ -136,7 +132,6 @@ router.get('/journeys/uber', async(req, res) => {
     end_longitude,
   };
 
-  console.log('user', req.user);
   uber.getPriceEstimate(req.user, coords)
     .then(json => res.json(json.prices));
 });

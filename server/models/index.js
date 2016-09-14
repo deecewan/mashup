@@ -4,20 +4,26 @@ import Sequelize from 'sequelize';
 
 let db = null;
 
+const url = process.env.MYSQL_ENV_MYSQL_USER ?
+  `mysql://${process.env.MYSQL_ENV_MYSQL_USER}:${process.env.MYSQL_ENV_MYSQL_USER}@`
+  + `${process.env.MYSQL_PORT_3306_TCP_ADDR}:${process.env.MYSQL_PORT_3306_TCP_PORT}/`
+  + `${process.env.MYSQL_ENV_MYSQL_DATABASE}` : false;
+
 export default class Database {
   constructor() {
     if (this.db) {
       return db;
     }
+
     switch (process.env.NODE_ENV) {
       case 'development':
         this.url = 'mysql://mashup@localhost:3306/mashup';
         break;
       case 'testing':
-        this.url = 'mysql://mashu[@localhost:3306/mashup_test';
+        this.url = 'mysql://mashup@localhost:3306/mashup_test';
         break;
       default:
-        this.url = process.env.DATABASE_URL || 'mysql://mashup@localhost:3306/mashup';
+        this.url = url || 'mysql://mashup@localhost:3306/mashup';
         break;
     }
     this.models = {};
